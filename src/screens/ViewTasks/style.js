@@ -33,11 +33,18 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         color: 'white'
     },
+    buttonFaded:{
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderRadius: 6,
+        borderWidth: 1,
+        color: 'black'
+    },
     button1: {
         marginRight: 6
     },
     button2: {
-        marginLeft: 6
+        //marginLeft: 6
     }
 })
 export default styles
