@@ -3,11 +3,25 @@ import Constants from 'expo-constants';
 
 const styles = StyleSheet.create({
     container: { 
-        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
         width: '100%',
-        flex: 1,
-        marginTop: Constants.statusBarHeight//makes sure the top of the screen has the proper padding in regards to the status bar.
+        borderBottomWidth: 1,
     },
+    title: {
+        width: '30%',
+        fontWeight: 'bold',
+        paddingHorizontal: 4
+    },
+    description: {
+        width: '60%'
+    },
+    icon: {
+        width: '10%',
+        marginLeft: 4
+    }
 })
 export default styles

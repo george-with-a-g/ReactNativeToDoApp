@@ -15,29 +15,5 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginBottom: 2,
     },
-    titleContainer: {
-        flexDirection: 'row'
-    },
-    subtitleHighlight: {
-        color: '#4e46e5'
-    },
-    buttonWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        paddingVertical: 8
-    },
-    button: {
-        backgroundColor: '#3d28de',
-        paddingVertical: 4,
-        paddingHorizontal: 8,
-        borderRadius: 6,
-        color: 'white'
-    },
-    button1: {
-        marginRight: 6
-    },
-    button2: {
-        marginLeft: 6
-    }
 })
 export default styles
