@@ -3,10 +3,17 @@ import { useNavigation } from '@react-navigation/native';//this will navigate th
 import { Checkbox } from 'react-native-paper';
 import { useState } from 'react';
 import styles from './style';//styles for this screen.
+import { useAuthContext } from '../../contexts'; 
 
 const TaskScreen  = ({route}) => {
     const navigation = useNavigation();
+    const { setUserLocation, allTasks, setAllTasks } = useAuthContext();
+
     const [checked, setChecked] = useState(route.params.complete);
+    const modifyCompletionStatus = () => {
+        setChecked(!checked);
+
+    }
     return(
         <View style={styles.container}>
             <Text style={styles.title}>{route.params.title}</Text>
@@ -17,7 +24,7 @@ const TaskScreen  = ({route}) => {
             <View style={styles.checkBoxContainer}>
                 <Checkbox
                     status={ checked ? 'checked' : 'unchecked' }
-                    onPress={() => setChecked(!checked)}
+                    onPress={ modifyCompletionStatus }
                 />
                 { checked ? (
                     <Text>The task is complete</Text>

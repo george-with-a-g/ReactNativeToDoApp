@@ -4,13 +4,71 @@ import { useState } from 'react';//manage state for TextInputs
 import { Checkbox } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './style';//styles for this screen.
+import { useAuthContext } from '../../contexts'; 
+import * as Location from 'expo-location';
 
 const CreateTaskScreen = () => {
     const navigation = useNavigation();
-    const [ value, setValue ] = useState('');//this will be used for getting the state of the task name
-    const [checked, setChecked] = useState(false);//checkbox to track location.
+    const [ value, setValue ] = useState('');//this will be used for getting the state of the task title
+    const [ description, setDescription ] = useState('');//this will be used for getting the state of the task title
+    const [checked, setChecked] = useState(true);//checkbox to track location.
+
+    const { userLocation, setUserLocation, allTasks, setAllTasks, saveTaskData } = useAuthContext();
 
     const goViewTasks = () => {navigation.navigate('ViewTasks')}
+
+    //get the latest key from all the tasks created by the user.
+    const mostRecentTaskKey = (allTasks) => {
+        if (allTasks){
+            try{
+                let lastValue = allTasks[allTasks.length - 1];
+                return lastValue.key;
+            }
+            catch (error){
+                return '0';//no task created so the key would be one
+            }
+        }
+        return '0';//no task created so the key would be one
+    }
+
+    const submitTask = (allTasks, setAllTasks) => {
+        let newKey = mostRecentTaskKey(allTasks);
+        newKey = parseInt(newKey) + 1;
+        newKey = newKey.toString();
+        if (checked){//user wants location tracked.
+            (async () => {
+                //get the latest location then create the task.
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+                let location = await Location.getCurrentPositionAsync({});
+                setUserLocation(location);
+
+                let newTaskData = {key: newKey, title: value, description: description, complete: false, locationInfo: userLocation, locationInfoClose: null };
+                if (allTasks === null){
+                    setAllTasks([newTaskData]);
+                }
+                else{
+                    allTasks.push(newTaskData);
+                    setAllTasks(allTasks);
+                }
+            })();
+        }else{//user does not want location tracked.
+            let newTaskData = {key: newKey, title: value, description: description, complete: false, locationInfo: null, locationInfoClose: null };
+            if (allTasks === null){
+                setAllTasks([newTaskData]);
+            }
+            else{
+                allTasks.push(newTaskData);
+                setAllTasks(allTasks);
+            }
+        }
+        navigation.navigate('HomeScreen');
+        //navigation.navigate('ViewTasks');
+    }
+
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Create a task</Text>
@@ -21,7 +79,7 @@ const CreateTaskScreen = () => {
             
             <View style={styles.formContainer}>
                 <TextInput style={styles.formInput} placeholder="Task title" value={value} onChangeText={text => setValue(text)} />
-                <TextInput style={styles.formBottomInput} placeholder="Task description" value={value} onChangeText={text => setValue(text)} />
+                <TextInput style={styles.formBottomInput} placeholder="Task description" value={description} onChangeText={text => setDescription(text)} />
             </View>
 
             <View style={styles.checkBoxContainer}>
@@ -32,9 +90,9 @@ const CreateTaskScreen = () => {
                 <Text style={styles.subtitle}>Track location</Text>
             </View>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => submitTask(allTasks, setAllTasks)}>
                 <MaterialIcons name="note-add" size={16} color="white" />
-                <Text style={styles.buttonText}>Submit</Text>
+                <Text style={styles.buttonText} >Submit</Text>
             </TouchableOpacity>
         </View>
     )

@@ -3,13 +3,14 @@ import { useNavigation } from '@react-navigation/native';//this will navigate th
 import styles from './style';//styles for this screen.
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const TaskComponent   = ({title, complete, description}) => {
+const TaskComponent   = ({title, complete, description, id}) => {
     const navigation = useNavigation();
 
     const goViewTask = () => {navigation.navigate('TaskScreen', {
         title: title,
         description: description,
-        complete: complete
+        complete: complete,
+        id: id
     })}
     return(
         <View style={styles.container}>

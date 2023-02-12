@@ -1,34 +1,47 @@
 import { View, Image, Text, TouchableOpacity, Button, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';//this will navigate the app from screen to screen
 import TaskComponent from '../../components/SingleTaskComponent';//importing the component for the tasks component
+import { useNavigation } from '@react-navigation/native';//this will navigate the app from screen to screen
+import { useAuthContext } from '../../contexts'; 
 import { useState } from 'react';
 import styles from './style';//styles for this screen.
 
 const data = [
-    { key: '1', title: 'First task', description: 'The first one', complete: true},
-    { key: '2', title: 'Second task', description: 'The second one', complete: false},
-    { key: '3', title: 'Third task', description: 'The third one that has a quite lengthy description.', complete: false},
+    { key: '1', title: 'First task', description: 'The first one', complete: true, locationInfo: null, locationInfoClose: null},
+    { key: '2', title: 'Second task', description: 'The second one', complete: false, locationInfo: null, locationInfoClose: null},
+    { key: '3', title: 'Third task', description: 'The third one that has a quite lengthy description.', complete: false, locationInfo: null, locationInfoClose: null},
 ]
 const ViewTaskScreen  = () => {
     const navigation = useNavigation();
+    const { setUserLocation, allTasks, setAllTasks } = useAuthContext();
 
-    const [ tasks, setTasks ] = useState(data);
-    const [ showCompleteToggle, setShowCompleteToggle ] = useState('All');
+    const [ tasks, setTasks ] = useState(allTasks);
+    const [ showCompleteToggle, setShowCompleteToggle ] = useState('All');//state to show if user wants to see all tasks or filter to complete/incomplete.
 
     const goCreateTasks = () => {navigation.navigate('CreateTaskScreen')}
+    //the function below will filter the list to show all tasks.
     const showAllTasks = () => {
-        setTasks(data);
+        setTasks(allTasks);
         setShowCompleteToggle('All');
     }
+    //the function below will filter the list to show only tasks that are complete.
     const filterCompleteTasks = () => {
-        const filteredList = data.filter((item) => item.complete );
-        setTasks(filteredList);
-        setShowCompleteToggle('Complete');
+        if (allTasks){
+            const filteredList = allTasks.filter((item) => item.complete );
+            setTasks(filteredList);
+            setShowCompleteToggle('Complete');
+        }else{
+            setShowCompleteToggle('Complete');
+        }
     }
+    //the function below will filter the list to show only tasks that are incomplete.
     const filterInCompleteTasks = () => {
-       const filteredListTwo = data.filter((item) => item.complete === false );
-        setTasks(filteredListTwo);
-        setShowCompleteToggle('Incomplete');
+        if (allTasks){
+            const filteredListTwo = allTasks.filter((item) => item.complete === false );
+            setTasks(filteredListTwo);
+            setShowCompleteToggle('Incomplete');
+        }else{
+            setShowCompleteToggle('Incomplete');
+        }
     }
     return(
         <View style={styles.container}>
@@ -59,7 +72,7 @@ const ViewTaskScreen  = () => {
             <FlatList 
                 data={tasks}
                 style={{ width: '95%' }}
-                renderItem={ ({ item }) => <TaskComponent title={item.title} description={item.description} complete={item.complete} /> }
+                renderItem={ ({ item }) => <TaskComponent id={item.key} title={item.title} description={item.description} complete={item.complete} /> }
             />
         </View>
     )
