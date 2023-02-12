@@ -2,7 +2,7 @@ import { View, Image, Text, TouchableOpacity, Button, FlatList } from 'react-nat
 import TaskComponent from '../../components/SingleTaskComponent';//importing the component for the tasks component
 import { useNavigation } from '@react-navigation/native';//this will navigate the app from screen to screen
 import { useAuthContext } from '../../contexts'; 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './style';//styles for this screen.
 
 const data = [
@@ -12,7 +12,7 @@ const data = [
 ]
 const ViewTaskScreen  = () => {
     const navigation = useNavigation();
-    const { setUserLocation, allTasks, setAllTasks } = useAuthContext();
+    const { setUserLocation, allTasks, setAllTasks, retrieveTaskData, saveTaskData } = useAuthContext();
 
     const [ tasks, setTasks ] = useState(allTasks);
     const [ showCompleteToggle, setShowCompleteToggle ] = useState('All');//state to show if user wants to see all tasks or filter to complete/incomplete.
@@ -43,9 +43,20 @@ const ViewTaskScreen  = () => {
             setShowCompleteToggle('Incomplete');
         }
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            saveTaskData(allTasks, setAllTasks);
+            const freshTaskList =[...allTasks];
+            setTasks(freshTaskList);
+        }, 1000);
+        return () => clearInterval(interval);
+
+    }, []);
+
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>All tasks</Text>
+            <Text style={styles.title}>All {allTasks.length} tasks</Text>
             <View style={styles.titleContainer}>
                 <Text style={styles.subtitle}>Or</Text>
                 <Text onPress={goCreateTasks} style={styles.subtitleHighlight}> create a new task.</Text>
@@ -72,7 +83,7 @@ const ViewTaskScreen  = () => {
             <FlatList 
                 data={tasks}
                 style={{ width: '95%' }}
-                renderItem={ ({ item }) => <TaskComponent id={item.key} title={item.title} description={item.description} complete={item.complete} /> }
+                renderItem={ ({ item }) => <TaskComponent id={item.key} title={item.title} description={item.description} complete={item.complete} locationInfo={item.locationInfo} locationInfoClose={item.locationInfoClose} /> }
             />
         </View>
     )

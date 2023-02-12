@@ -3,20 +3,20 @@ import { useNavigation } from '@react-navigation/native';//this will navigate th
 import MapView, {Marker} from 'react-native-maps';
 import styles from './style';//styles for this screen.
 
-const MapScreen  = () => {
+const MapScreen  = ({route}) => {
     const navigation = useNavigation();
     return(
         <View style={styles.container}>
             <MapView
                 style={styles.map}
                 initialRegion={{
-                    latitude: 13.406,
-                    longitude: 123.3753,
+                    latitude: route.params.locationInfo.coords.latitude,
+                    longitude: route.params.locationInfo.coords.longitude,
                     latitudeDelta: 0.005,
-
+                    longitudeDelta: 0.005
                 }}
             >
-                <Marker coordinate={{ latitude: 13.406, longitude: 123.3753}}></Marker>
+                <Marker coordinate={{ latitude: route.params.locationInfo.coords.latitude, longitude: route.params.locationInfo.coords.longitude }}></Marker>
             </MapView>
         </View>
     )

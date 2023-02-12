@@ -41,9 +41,21 @@ const HomeScreen = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Task Manager</Text>
             <View style={styles.buttonContainer}>
-                <Text style={styles.button} onPress={goCreateTask}>Create a new Task</Text>
-                <Text style={styles.button} onPress={goViewTasks}>View Tasks</Text>
-                <Text style={styles.button} onPress={() => goClearTasks(allTasks, setAllTasks)}>Clear Tasks</Text>
+                <TouchableOpacity style={styles.button} onPress={goCreateTask}>
+                    <Text style={styles.buttonText}>
+                        Create Task
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={goViewTasks}>
+                    <Text style={styles.buttonText}>
+                        View Task
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => goClearTasks(allTasks, setAllTasks)}>
+                    <Text style={styles.buttonText}>
+                        Clear Task
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

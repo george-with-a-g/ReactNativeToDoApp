@@ -10,18 +10,28 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight//makes sure the top of the screen has the proper padding in regards to the status bar.
     },
     buttonContainer: {
+        alignItems: 'center'
     },
     title: {
         fontWeight: 'bold',
         fontSize: 24,
+        marginTop: 24,
         marginBottom: 30
     },
     button: {
+        //backgroundColor: '#4e46e5',
+        backgroundColor: '#3d28de',
+        flexDirection: 'row',
+        width: '80%',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        color: 'white',
         textAlign: 'center',
-        padding: 8,
-        paddingHorizontal: 10,
-        marginBottom: 10,
-        borderWidth: 1
+        marginTop: 16
+    },
+    buttonText: {
+        color: 'white',
     }
 })
 export default styles

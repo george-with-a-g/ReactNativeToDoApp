@@ -7,12 +7,47 @@ import { useAuthContext } from '../../contexts';
 
 const TaskScreen  = ({route}) => {
     const navigation = useNavigation();
-    const { setUserLocation, allTasks, setAllTasks } = useAuthContext();
+    const { setUserLocation, allTasks, setAllTasks, userLocation } = useAuthContext();
 
     const [checked, setChecked] = useState(route.params.complete);
+    const [creationLocation, setCreationLocation] = useState(route.params.locationInfo);
+    const [completionLocation, setCompletionLocation] = useState(route.params.locationInfoClose);
     const modifyCompletionStatus = () => {
         setChecked(!checked);
-
+        //location is tracked so it will also track location on closing the task.
+        if (route.params.locationInfo){
+            setAllTasks(prevState => prevState.map(item => {
+                if (item.key === route.params.id) {
+                    return {
+                        ...item,
+                        complete: true,
+                        locationInfoClose: userLocation
+                    };
+                }
+                return item;
+            }));
+        }else{
+            setAllTasks(prevState => prevState.map(item => {
+                if (item.key === route.params.id) {
+                    return {
+                        ...item,
+                        complete: true
+                    };
+                }
+                return item;
+            }));
+        }
+    }
+    
+    const goToMapScreen = () => {
+        navigation.navigate('MapScreen', {
+            locationInfo: route.params.locationInfo
+        });
+    }
+    const goToMapScreenClosed = () => {
+        navigation.navigate('MapScreen', {
+            locationInfo: route.params.locationInfoClose
+        });
     }
     return(
         <View style={styles.container}>
@@ -32,6 +67,29 @@ const TaskScreen  = ({route}) => {
                     <Text>The task is incomplete</Text>
                 )}
             </View>
+            <View style={{ width: '100%', paddingHorizontal: '5%' }}>
+                <Text style={{ fontWeight: 'bold' }}>Note </Text>
+            </View>
+            { route.params.locationInfo ? (
+                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
+                    <Text style={{ color: '#4e46e5' }} onPress={goToMapScreen}>Location when task was created.</Text>
+                </View>
+                ) : (
+                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
+                    <Text>Location was not recorded when task was created.</Text>
+                    <Text>Location will not be recorded when task is completed.</Text>
+                </View>
+                )
+            }
+            { route.params.locationInfo && checked ? (
+                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
+                    <Text style={{ color: '#4e46e5' }} onPress={goToMapScreen}>Location when task was completed.</Text>
+                </View>
+                ) : (
+                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
+                </View>
+                )
+            }
         </View>
     )
 }
