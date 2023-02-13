@@ -13,6 +13,9 @@ const HomeScreen = () => {
         retrieveTaskData(setAllTasks);
     }, []);
 
+    useEffect(() => {
+        console.log("Task change has been received in the Home Screen")
+    }, [allTasks]);
     //get location Permission and location details.
     const [errorMsg, setErrorMsg] = useState(null);
     useEffect(() => {

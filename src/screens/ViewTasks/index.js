@@ -10,9 +10,14 @@ const ViewTaskScreen  = () => {
     const { setUserLocation, allTasks, setAllTasks, retrieveTaskData, saveTaskData } = useAuthContext();
 
     const [ tasks, setTasks ] = useState(allTasks);
-    const [ showCompleteToggle, setShowCompleteToggle ] = useState('All');//state to show if user wants to see all tasks or filter to complete/incomplete.
+    const [ showCompleteToggle, setShowCompleteToggle ] = useState('About');//state to show if user wants to see all tasks or filter to complete/incomplete.
 
     const goCreateTasks = () => {navigation.navigate('CreateTaskScreen')}
+    //the function below will filter the list to show all tasks.
+    const showAbout = () => {
+        setTasks(allTasks);
+        setShowCompleteToggle('About');
+    }
     //the function below will filter the list to show all tasks.
     const showAllTasks = () => {
         setTasks(allTasks);
@@ -39,24 +44,20 @@ const ViewTaskScreen  = () => {
         }
     }
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            saveTaskData(allTasks, setAllTasks);
-            const freshTaskList =[...allTasks];
-            setTasks(freshTaskList);
-        }, 1000);
-        return () => clearInterval(interval);
-
-    }, []);
-
     return(
         <View style={styles.container}>
-            <Text style={styles.title}>All {allTasks.length} tasks</Text>
+            <Text style={styles.title}>Your tasks</Text>
             <View style={styles.titleContainer}>
                 <Text style={styles.subtitle}>Or</Text>
                 <Text onPress={goCreateTasks} style={styles.subtitleHighlight}> create a new task.</Text>
             </View>
             <View style={styles.buttonWrapper}>
+                { showCompleteToggle === 'About' ? (
+                    <Text style={[styles.button, styles.button1]} onPress={showAbout}> About </Text>
+                ) : ( 
+                    <Text style={[styles.buttonFaded, styles.button1]} onPress={showAbout}> About </Text>
+                )}
+
                 { showCompleteToggle === 'All' ? (
                     <Text style={[styles.button, styles.button1]} onPress={showAllTasks}> All </Text>
                 ) : ( 
@@ -75,11 +76,15 @@ const ViewTaskScreen  = () => {
                     <Text style={[styles.buttonFaded, styles.button1]} onPress={filterInCompleteTasks}> Incomplete </Text>
                 )}
             </View>
+
+            { showCompleteToggle !== 'About' ? (
             <FlatList 
                 data={tasks}
                 style={{ width: '95%' }}
                 renderItem={ ({ item }) => <TaskComponent id={item.key} title={item.title} description={item.description} complete={item.complete} locationInfo={item.locationInfo} locationInfoClose={item.locationInfoClose} /> }
-            />
+            />) : (
+                <Text>You can view your tasks from here and use the buttons above to toggle.</Text>
+            )}
         </View>
     )
 }

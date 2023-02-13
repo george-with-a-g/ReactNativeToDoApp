@@ -21,15 +21,25 @@
       "supportsTablet": true
     },
     "android": {
-        "package": "com.georgetask.app",
-        "versionCode": 1,
-        "adaptiveIcon": {
-            "foregroundImage": "./assets/adaptive-icon.png",
-            "backgroundColor": "#FFFFFF"
-        }
+      "package": "com.georgetask.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+            "googleMaps": {
+                "apiKey": "AIzaSyBKUIo7vj3B90pBSYH6VVrGOnsa0co23tc"
+            }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "556f2717-9c5c-43af-a3e8-05c3910959ac"
+      }
     }
   }
 }
