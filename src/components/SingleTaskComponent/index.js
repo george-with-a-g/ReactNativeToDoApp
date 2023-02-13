@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const TaskComponent   = ({ title, complete, description, id, locationInfo, locationInfoClose }) => {
     const navigation = useNavigation();
 
+    //go to task screen and send details of the individual task.
     const goViewTask = () => {navigation.navigate('TaskScreen', {
         id: id,
         title: title,

@@ -15,9 +15,10 @@ const CreateTaskScreen = () => {
 
     const { userLocation, setUserLocation, allTasks, setAllTasks, saveTaskData } = useAuthContext();
 
+    //go to task screen
     const goViewTasks = () => {navigation.navigate('ViewTasks')}
 
-    //get the latest key from all the tasks created by the user.
+    //get the latest key from all the tasks created by the user. Should be used to get the next possible key
     const mostRecentTaskKey = (allTasks) => {
         if (allTasks){
             try{
@@ -66,7 +67,6 @@ const CreateTaskScreen = () => {
             }
         }
         navigation.navigate('HomeScreen');
-        //navigation.navigate('ViewTasks');
     }
 
     return(

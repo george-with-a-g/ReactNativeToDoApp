@@ -1,4 +1,4 @@
-import { View, Image, Text, TouchableOpacity, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';//this will navigate the app from screen to screen
 import { useAuthContext } from '../../contexts'; 
 import { useState, useEffect } from 'react';
@@ -11,7 +11,6 @@ const HomeScreen = () => {
 
     useEffect(() => {
         retrieveTaskData(setAllTasks);
-        //console.log(allTasks, "all Tasks");
     }, []);
 
     //get location Permission and location details.

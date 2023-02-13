@@ -39,11 +39,13 @@ const TaskScreen  = ({route}) => {
         }
     }
     
+    //used for going to map screen to view location task opened at
     const goToMapScreen = () => {
         navigation.navigate('MapScreen', {
             locationInfo: route.params.locationInfo
         });
     }
+    //used for going to map screen to view location task closed at
     const goToMapScreenClosed = () => {
         navigation.navigate('MapScreen', {
             locationInfo: route.params.locationInfoClose

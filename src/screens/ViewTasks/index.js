@@ -5,11 +5,6 @@ import { useAuthContext } from '../../contexts';
 import { useState, useEffect } from 'react';
 import styles from './style';//styles for this screen.
 
-const data = [
-    { key: '1', title: 'First task', description: 'The first one', complete: true, locationInfo: null, locationInfoClose: null},
-    { key: '2', title: 'Second task', description: 'The second one', complete: false, locationInfo: null, locationInfoClose: null},
-    { key: '3', title: 'Third task', description: 'The third one that has a quite lengthy description.', complete: false, locationInfo: null, locationInfoClose: null},
-]
 const ViewTaskScreen  = () => {
     const navigation = useNavigation();
     const { setUserLocation, allTasks, setAllTasks, retrieveTaskData, saveTaskData } = useAuthContext();
